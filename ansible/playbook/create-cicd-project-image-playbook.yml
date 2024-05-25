@@ -1,0 +1,15 @@
+# ansible-playbook -i hosts create-cicd-project-image-playbook.yml --limit 172.17.0.3
+- hosts: all
+
+  tasks:
+  - name: create a docker image with deployed waf file
+    command: docker build -t rndso15/cicd-project-ansible .
+    args: 
+        chdir: /root
+    
+  - name: push the image on Docker Hub
+    command: docker push rndso15/cicd-project-ansible
+
+  - name: remove the docker image from the ansible server
+    command: docker rmi rndso15/cicd-project-ansible  
+    ignore_errors: yes
